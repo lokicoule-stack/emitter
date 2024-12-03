@@ -1,0 +1,9 @@
+{
+  "extends": "@lokiverse/tsconfig/presets/lib-browser",
+  "compilerOptions": {
+    "outDir": "./build",
+    "rootDir": "./src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "tests", "**/*.test.ts", "**/*.spec.ts"]
+}
