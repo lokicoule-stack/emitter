@@ -7,6 +7,7 @@ describe('EventEmitter Type Tests', () => {
     once: vitest.fn<(...args: unknown[]) => void>(),
     off: vitest.fn<(...args: unknown[]) => void>(),
     emit: vitest.fn<(...args: unknown[]) => boolean>(),
+    namespace: vitest.fn<(...args: unknown[]) => unknown>(),
   } as EventEmitter<MyEvents>
 
   type MyEvents = {
@@ -70,5 +71,33 @@ describe('EventEmitter Type Tests', () => {
 
     // @ts-expect-error - Wildcard not supported in once
     emitter.once('*', () => {})
+  })
+
+  it('should type check namespace', () => {
+    const authNamespace = emitter.namespace('auth')
+
+    authNamespace.on('login', (payload) => {
+      expectTypeOf(payload).toMatchTypeOf<{ userId: string }>()
+    })
+
+    authNamespace.on('logout', (payload) => {
+      expectTypeOf(payload).toMatchTypeOf<void>()
+    })
+
+    authNamespace.emit('login', { userId: '123' })
+
+    // @ts-expect-error - Events from other namespaces should not be accessible
+    authNamespace.on('data:update', () => {})
+
+    // @ts-expect-error - Original event name with namespace prefix should not work
+    authNamespace.on('auth:login', () => {})
+
+    // @ts-expect-error - Invalid event in this namespace
+    authNamespace.emit('invalid', {})
+
+    authNamespace.on('*', (event, payload) => {
+      expectTypeOf(event).toMatchTypeOf<'login' | 'logout'>()
+      expectTypeOf(payload).toMatchTypeOf<{ userId: string } | void>()
+    })
   })
 })
