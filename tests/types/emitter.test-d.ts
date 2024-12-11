@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it, vitest } from 'vitest'
-import type { EventEmitter } from '../../src/types/emitter'
+import type { EventEmitter } from '../../src/types/emitters'
 
 describe('EventEmitter Type Tests', () => {
   const emitter = {
