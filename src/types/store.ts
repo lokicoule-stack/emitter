@@ -1,7 +1,10 @@
-import type { EventMap, RegularHandler, WildcardHandler } from './main'
+import type { EventType, WildcardPattern } from './events'
 
-export type EmitterStore<T extends EventMap> = {
-  readonly handlers: Map<keyof T, Set<RegularHandler<T, keyof T>>>
-  readonly wildcardHandlers: Set<WildcardHandler<T>>
-  readonly onceHandlers: WeakMap<Function, Function>
+export type Store = {
+  listeners: Map<EventType, Set<Function>>
+  wildcardListeners: Set<{
+    pattern: WildcardPattern
+    handler: Function
+  }>
+  onceListeners: WeakMap<Function, Function>
 }
