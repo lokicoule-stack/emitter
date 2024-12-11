@@ -20,7 +20,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["src"]
+  "include": ["src", "tests/types/emitter.test-d.ts", "testing/emitter"]
 }
