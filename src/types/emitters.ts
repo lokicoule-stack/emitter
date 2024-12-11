@@ -3,6 +3,16 @@ import type { ValidHandler } from './handlers'
 import type { FilterEventsByNamespace, NamespaceKeys } from './ns'
 
 /**
+ * Unsafe interface (for internal use only)
+ */
+export interface UnsafeEventEmitter {
+  on(event: EventType, handler: Function): () => void
+  once(event: EventType, handler: Function): void
+  off(event: EventType, handler?: Function): void
+  emit(event: EventType, payload?: unknown): boolean
+}
+
+/**
  * Public interface
  */
 export interface EventEmitter<TEvents extends EventMap> {
