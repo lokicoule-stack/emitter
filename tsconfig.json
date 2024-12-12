@@ -23,5 +23,5 @@
     "noUncheckedSideEffectImports": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src", "tests/types/emitter.test-d.ts", "testing/emitter"]
+  "include": ["src"]
 }
