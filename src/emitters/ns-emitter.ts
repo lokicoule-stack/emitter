@@ -33,7 +33,7 @@ export const createNSEmitter = <TEvents extends EventMap, N extends NamespaceKey
 
     emit<E extends keyof FilterEventsByNamespace<TEvents, N> & string>(
       event: E,
-      payload: EventPayload<FilterEventsByNamespace<TEvents, N>, E>,
+      payload?: EventPayload<FilterEventsByNamespace<TEvents, N>, E>,
     ) {
       return baseEmitter.emit(prefixEvent(event), payload)
     },

@@ -28,10 +28,18 @@ export const createUnsafeEmitter = (store: Store = createStore()): UnsafeEventEm
   }
 
   const once = (event: EventType, handler: Function): void => {
-    const onceWrapper = (...args: unknown[]) => {
-      handler(...args)
-      off(event, onceWrapper)
+    const createOnceWrapper = (event: EventType, handler: Function, off: Function) => {
+      let called = false
+      return (payload?: unknown) => {
+        if (!called) {
+          called = true
+          handler(payload)
+          off(event, handler)
+        }
+      }
     }
+
+    const onceWrapper = createOnceWrapper(event, handler, off)
     store.onceListeners.set(handler, onceWrapper)
     on(event, onceWrapper)
   }

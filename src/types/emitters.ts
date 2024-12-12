@@ -9,7 +9,7 @@ export interface UnsafeEventEmitter {
   on(event: EventType, handler: Function): () => void
   once(event: EventType, handler: Function): void
   off(event: EventType, handler?: Function): void
-  emit(event: EventType, payload?: unknown): boolean
+  emit(event: EventType, payload?: unknown): void
 }
 
 /**
@@ -31,7 +31,8 @@ export interface EventEmitter<TEvents extends EventMap> {
     handler?: ValidHandler<TEvents, E & EventType>,
   ): void
 
-  emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): boolean
+  emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): void
+  emit<E extends keyof TEvents & EventType>(event: undefined extends TEvents[E] ? E : never): void
 
   namespace<N extends NamespaceKeys<TEvents>>(
     ns: N,

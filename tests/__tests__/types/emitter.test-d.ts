@@ -31,6 +31,8 @@ describe('EventEmitter API', () => {
       expectTypeOf(payload).toMatchTypeOf<{ data: unknown }>()
     })
 
+    emitter.emit('auth:logout')
+
     // @ts-expect-error - Invalid event name
     emitter.on('invalid', () => {})
 
@@ -95,6 +97,8 @@ describe('EventEmitter API', () => {
     })
 
     authNamespace.emit('login', { userId: '123' })
+
+    authNamespace.emit('logout')
 
     // @ts-expect-error - Events from other namespaces should not be accessible
     authNamespace.on('data:update', () => {})
