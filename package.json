@@ -8,6 +8,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "bench": "pnpm --filter \"@lokicoule/event-emitter-benchmarks\" bench",
     "format": "prettier --write .",
     "lint": "eslint . --ext=.ts",
     "typecheck": "tsc --noEmit && vitest --typecheck.only"
