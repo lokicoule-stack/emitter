@@ -30,7 +30,7 @@ export const createSafeEmitter = <TEvents extends EventMap>() => {
       unsafeEmitter.off(event, handler)
     },
 
-    emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>) {
+    emit<E extends keyof TEvents & EventType>(event: E, payload?: EventPayload<TEvents, E>) {
       return unsafeEmitter.emit(event, payload)
     },
 

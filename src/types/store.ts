@@ -6,5 +6,4 @@ export type Store = {
     pattern: WildcardPattern
     handler: Function
   }>
-  onceListeners: WeakMap<Function, Function>
 }

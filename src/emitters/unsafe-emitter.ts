@@ -28,20 +28,11 @@ export const createUnsafeEmitter = (store: Store = createStore()): UnsafeEventEm
   }
 
   const once = (event: EventType, handler: Function): void => {
-    const createOnceWrapper = (event: EventType, handler: Function, off: Function) => {
-      let called = false
-      return (payload?: unknown) => {
-        if (!called) {
-          called = true
-          handler(payload)
-          off(event, handler)
-        }
-      }
+    const wrappedHandler = (payload: unknown) => {
+      handler(payload)
+      off(event, wrappedHandler)
     }
-
-    const onceWrapper = createOnceWrapper(event, handler, off)
-    store.onceListeners.set(handler, onceWrapper)
-    on(event, onceWrapper)
+    on(event, wrappedHandler)
   }
 
   const off = (event: EventType, handler?: Function): void => {
@@ -70,8 +61,7 @@ export const createUnsafeEmitter = (store: Store = createStore()): UnsafeEventEm
     const listeners = store.listeners.get(event)
     if (!listeners) return
 
-    const onceWrapper = store.onceListeners.get(handler)
-    listeners.delete(onceWrapper || handler)
+    listeners.delete(handler)
 
     if (listeners.size === 0) {
       store.listeners.delete(event)
