@@ -1,0 +1,16 @@
+{
+  "name": "@lokicoule/event-emitter-benchmarks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "vitest bench --run",
+    "bench:watch": "vitest bench --watch"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "eventemitter3": "latest",
+    "events": "latest",
+    "mitt": "latest",
+    "vitest": "latest"
+  }
+}
