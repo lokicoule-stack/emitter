@@ -68,25 +68,17 @@ export const createUnsafeEmitter = (store: Store = createStore()): UnsafeEventEm
     }
   }
 
-  const emit = (event: EventType, payload?: unknown): boolean => {
-    let emitted = false
-
+  const emit = (event: EventType, payload?: unknown): void => {
     const listeners = store.listeners.get(event)
-    if (listeners) {
-      listeners.forEach((handler) => {
-        handler(payload)
-        emitted = true
-      })
-    }
+    listeners?.forEach((handler) => {
+      handler(payload)
+    })
 
     store.wildcardListeners.forEach((entry) => {
       if (matchesWildcard(entry.pattern, event)) {
-        entry.handler(event, payload)
-        emitted = true
+        entry.handler(payload)
       }
     })
-
-    return emitted
   }
 
   return { on, once, off, emit }
