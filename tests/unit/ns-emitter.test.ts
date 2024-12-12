@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createNSEmitter } from '../../../src/emitters/ns-emitter'
-import { createUnsafeEmitter } from '../../../src/emitters/unsafe-emitter'
-import type { TestEvents } from '../../../testing/fixtures/events'
-import { mockPayloads } from '../../../testing/fixtures/events'
+import { createNSEmitter } from '../../src/emitters/ns-emitter'
+import { createUnsafeEmitter } from '../../src/emitters/unsafe-emitter'
+import type { TestEvents } from '../../testing/fixtures/events'
+import { mockPayloads } from '../../testing/fixtures/events'
 
 describe('NSEmitter Unit Tests', () => {
   describe('on', () => {

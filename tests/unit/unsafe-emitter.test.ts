@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createUnsafeEmitter } from '../../../src/emitters/unsafe-emitter'
-import { mockPayloads } from '../../../testing/fixtures/events'
+import { createUnsafeEmitter } from '../../src/emitters/unsafe-emitter'
+import { mockPayloads } from '../../testing/fixtures/events'
 
 describe('UnsafeEmitter', () => {
   describe('on', () => {
