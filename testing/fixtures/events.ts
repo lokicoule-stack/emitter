@@ -14,6 +14,12 @@ export type TestEvents = {
   'build:fail': { status: string }
   'run:success': { status: string }
   'run:fail': { status: string }
+
+  // nested namespace
+  'build:cache:hit': { key: string; value: string }
+  'build:cache:miss': { key: string }
+  'run:cache:hit': { key: string; value: string }
+  'run:cache:miss': { key: string }
 }
 
 export const mockPayloads = {
@@ -25,4 +31,8 @@ export const mockPayloads = {
   buildFail: { status: 'failed' },
   runSuccess: { status: 'success' },
   runFail: { status: 'failed' },
+  buildCacheHit: { key: 'build-key', value: 'build-value' },
+  buildCacheMiss: { key: 'build-missing-key' },
+  runCacheHit: { key: 'run-key', value: 'run-value' },
+  runCacheMiss: { key: 'run-missing-key' },
 } as const
