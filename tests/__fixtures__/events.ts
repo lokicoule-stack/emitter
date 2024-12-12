@@ -15,6 +15,12 @@ export type TestEvents = {
   'run:success': { status: string }
   'run:fail': { status: string }
 
+  'server:start': { port: number }
+  'server:stop': { code: number }
+  'request:incoming': { method: string; url: string }
+  'request:complete': { status: number; duration: number }
+  'error:occurred': { message: string; code: string }
+
   // nested namespace
   'build:cache:hit': { key: string; value: string }
   'build:cache:miss': { key: string }

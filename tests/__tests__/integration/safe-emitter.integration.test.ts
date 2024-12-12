@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createSafeEmitter } from '../../src/emitters/safe-emitter'
-import type { TestEvents } from '../../testing/fixtures/events'
-import { mockPayloads } from '../../testing/fixtures/events'
+import { createSafeEmitter } from '../../../src/emitters/safe-emitter'
+import type { TestEvents } from '../../__fixtures__/events'
+import { mockPayloads } from '../../__fixtures__/events'
 
 describe('SafeEmitter Integration Tests', () => {
   it('should handle complex event flow', () => {

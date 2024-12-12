@@ -1,12 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createSafeEmitter } from '../../src/emitters/safe-emitter'
-import type { TestEvents } from '../../testing/fixtures/events'
-import { mockPayloads } from '../../testing/fixtures/events'
+import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
 describe('SafeEmitter Unit Tests', () => {
   describe('on', () => {
     it('should register and call flat event handler', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.on('build', handler)
@@ -17,7 +15,7 @@ describe('SafeEmitter Unit Tests', () => {
     })
 
     it('should register and call namespaced event handler', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.on('cache:hit', handler)
@@ -28,7 +26,7 @@ describe('SafeEmitter Unit Tests', () => {
     })
 
     it('should handle wildcard listeners', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.on('*', handler)
@@ -41,7 +39,7 @@ describe('SafeEmitter Unit Tests', () => {
     })
 
     it('should return unsubscribe function', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       const unsubscribe = emitter.on('build', handler)
@@ -54,7 +52,7 @@ describe('SafeEmitter Unit Tests', () => {
 
   describe('once', () => {
     it('should call handler only once for flat event', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.once('build', handler)
@@ -66,7 +64,7 @@ describe('SafeEmitter Unit Tests', () => {
     })
 
     it('should call handler only once for namespaced event', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.once('cache:hit', handler)
@@ -80,7 +78,7 @@ describe('SafeEmitter Unit Tests', () => {
 
   describe('off', () => {
     it('should remove specific handler', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler = vi.fn()
 
       emitter.on('build', handler)
@@ -91,7 +89,7 @@ describe('SafeEmitter Unit Tests', () => {
     })
 
     it('should remove all handlers when no handler specified', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const handler1 = vi.fn()
       const handler2 = vi.fn()
 
@@ -107,7 +105,7 @@ describe('SafeEmitter Unit Tests', () => {
 
   describe('namespace', () => {
     it('should create namespaced emitter', () => {
-      const emitter = createSafeEmitter<TestEvents>()
+      const emitter = createTestEmitter()
       const cacheEmitter = emitter.namespace('cache')
       const handler = vi.fn()
 

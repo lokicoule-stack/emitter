@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it, vitest } from 'vitest'
-import type { EventEmitter } from '../../src/types/emitters'
+import type { EventEmitter } from '../../../src/types/emitters'
 
-describe('EventEmitter Type Tests', () => {
+describe('EventEmitter API', () => {
   const emitter = {
     on: vitest.fn<(...args: unknown[]) => () => void>(),
     once: vitest.fn<(...args: unknown[]) => void>(),
