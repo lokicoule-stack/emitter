@@ -14,6 +14,8 @@ describe('EventEmitter Type Tests', () => {
     'auth:login': { userId: string }
     'auth:logout': void
     'data:update': { data: unknown }
+    'system:monitor:cpu': { usage: number }
+    'system:monitor:memory': { usage: number }
   }
 
   it('should type check regular event handlers', () => {
@@ -41,8 +43,16 @@ describe('EventEmitter Type Tests', () => {
 
   it('should type check wildcard handlers', () => {
     emitter.on('*', (event, payload) => {
-      expectTypeOf(event).toMatchTypeOf<'auth:login' | 'auth:logout' | 'data:update'>()
-      expectTypeOf(payload).toMatchTypeOf<{ userId: string } | void | { data: unknown }>()
+      expectTypeOf(event).toMatchTypeOf<
+        | 'auth:login'
+        | 'auth:logout'
+        | 'data:update'
+        | 'system:monitor:cpu'
+        | 'system:monitor:memory'
+      >()
+      expectTypeOf(payload).toMatchTypeOf<
+        { userId: string } | void | { data: unknown } | { usage: number }
+      >()
     })
 
     // @ts-expect-error - Once doesn't support wildcard
@@ -98,6 +108,33 @@ describe('EventEmitter Type Tests', () => {
     authNamespace.on('*', (event, payload) => {
       expectTypeOf(event).toMatchTypeOf<'login' | 'logout'>()
       expectTypeOf(payload).toMatchTypeOf<{ userId: string } | void>()
+    })
+  })
+
+  it('should type check nested namespaces', () => {
+    const systemNamespace = emitter.namespace('system')
+
+    const monitorNamespace = systemNamespace.namespace('monitor')
+
+    monitorNamespace.on('cpu', (payload) => {
+      expectTypeOf(payload).toMatchTypeOf<{ usage: number }>()
+    })
+
+    monitorNamespace.on('memory', (payload) => {
+      expectTypeOf(payload).toMatchTypeOf<{ usage: number }>()
+    })
+
+    monitorNamespace.emit('cpu', { usage: 0.5 })
+
+    // @ts-expect-error - Invalid event in this namespace
+    monitorNamespace.emit('invalid', {})
+
+    // @ts-expect-error - Original event name with namespace prefix should not work
+    monitorNamespace.on('system:monitor:cpu', () => {})
+
+    monitorNamespace.on('*', (event, payload) => {
+      expectTypeOf(event).toMatchTypeOf<'cpu' | 'memory'>()
+      expectTypeOf(payload).toMatchTypeOf<{ usage: number }>()
     })
   })
 })
