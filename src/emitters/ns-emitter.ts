@@ -7,38 +7,36 @@ export const createNSEmitter = <TEvents extends EventMap, N extends NamespaceKey
   baseEmitter: UnsafeEventEmitter,
   namespace: N,
 ): EventEmitter<FilterEventsByNamespace<TEvents, N>> => {
-  const prefixEvent = (event: string): string => (event === '*' ? '*' : `${namespace}:${event}`)
-
   return {
-    on<E extends EventKey<FilterEventsByNamespace<TEvents, N>> | '*'>(
+    $on<E extends EventKey<FilterEventsByNamespace<TEvents, N>> | '*'>(
       event: ValidEventKey<FilterEventsByNamespace<TEvents, N>, E & string>,
       handler: ValidHandler<FilterEventsByNamespace<TEvents, N>, E & string>,
     ) {
-      return baseEmitter.on(prefixEvent(event), handler)
+      return baseEmitter.on(`${namespace}:${event}`, handler)
     },
 
-    once<E extends EventKey<FilterEventsByNamespace<TEvents, N>>>(
+    $once<E extends EventKey<FilterEventsByNamespace<TEvents, N>>>(
       event: ValidEventKey<FilterEventsByNamespace<TEvents, N>, E & string>,
       handler: ValidHandler<FilterEventsByNamespace<TEvents, N>, E & string>,
     ) {
-      baseEmitter.once(prefixEvent(event), handler)
+      baseEmitter.once(`${namespace}:${event}`, handler)
     },
 
-    off<E extends EventKey<FilterEventsByNamespace<TEvents, N>> | '*'>(
+    $off<E extends EventKey<FilterEventsByNamespace<TEvents, N>> | '*'>(
       event: ValidEventKey<FilterEventsByNamespace<TEvents, N>, E & string>,
       handler?: ValidHandler<FilterEventsByNamespace<TEvents, N>, E & string>,
     ) {
-      baseEmitter.off(prefixEvent(event), handler)
+      baseEmitter.off(`${namespace}:${event}`, handler)
     },
 
-    emit<E extends keyof FilterEventsByNamespace<TEvents, N> & string>(
+    $emit<E extends keyof FilterEventsByNamespace<TEvents, N> & string>(
       event: E,
       payload?: EventPayload<FilterEventsByNamespace<TEvents, N>, E>,
     ) {
-      return baseEmitter.emit(prefixEvent(event), payload)
+      return baseEmitter.emit(`${namespace}:${event}`, payload)
     },
 
-    namespace<SubN extends NamespaceKeys<FilterEventsByNamespace<TEvents, N>>>(
+    $ns<SubN extends NamespaceKeys<FilterEventsByNamespace<TEvents, N>>>(
       ns: SubN,
     ): EventEmitter<FilterEventsByNamespace<FilterEventsByNamespace<TEvents, N>, SubN>> {
       return createNSEmitter(baseEmitter, `${namespace}:${ns}` as any)

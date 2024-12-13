@@ -11,7 +11,7 @@ describe('UnsafeEmitter Wildcard Listeners', () => {
     emitter.emit('run', mockPayloads.run)
 
     expect(wildcardHandler).toHaveBeenCalledTimes(2)
-    expect(wildcardHandler).toHaveBeenCalledWith('build', mockPayloads.build)
-    expect(wildcardHandler).toHaveBeenCalledWith('run', mockPayloads.run)
+    expect(wildcardHandler).toHaveBeenNthCalledWith(1, 'build', mockPayloads.build)
+    expect(wildcardHandler).toHaveBeenNthCalledWith(2, 'run', mockPayloads.run)
   })
 })

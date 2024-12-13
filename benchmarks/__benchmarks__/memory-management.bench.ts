@@ -5,8 +5,8 @@ describe('Memory Management', () => {
   bench('@lokiverse/emitter - add/remove cycle', () => {
     for (let i = 0; i < ITERATIONS; i++) {
       const handler = () => {}
-      emitters.lokiverse.on('start', handler)
-      emitters.lokiverse.off('start', handler)
+      emitters.lokiverse.$on('start', handler)
+      emitters.lokiverse.$off('start', handler)
     }
   })
 

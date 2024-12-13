@@ -13,11 +13,11 @@ describe('NSEmitter Integration Tests', () => {
     const buildHandler = vi.fn()
     const cacheHandler = vi.fn()
 
-    buildEmitter.on('success', buildHandler)
-    cacheEmitter.on('hit', cacheHandler)
+    buildEmitter.$on('success', buildHandler)
+    cacheEmitter.$on('hit', cacheHandler)
 
-    buildEmitter.emit('success', mockPayloads.buildSuccess)
-    cacheEmitter.emit('hit', mockPayloads.cacheHit)
+    buildEmitter.$emit('success', mockPayloads.buildSuccess)
+    cacheEmitter.$emit('hit', mockPayloads.cacheHit)
 
     expect(buildHandler).toHaveBeenCalledWith(mockPayloads.buildSuccess)
     expect(cacheHandler).toHaveBeenCalledWith(mockPayloads.cacheHit)
@@ -33,13 +33,13 @@ describe('NSEmitter Integration Tests', () => {
       all: vi.fn(),
     }
 
-    cacheEmitter.on('hit', handlers.hit)
-    cacheEmitter.on('miss', handlers.miss)
-    cacheEmitter.on('*', handlers.all)
+    cacheEmitter.$on('hit', handlers.hit)
+    cacheEmitter.$on('miss', handlers.miss)
+    cacheEmitter.$on('*', handlers.all)
 
-    cacheEmitter.emit('hit', mockPayloads.cacheHit)
-    cacheEmitter.emit('miss', mockPayloads.cacheMiss)
-    cacheEmitter.emit('clear', {})
+    cacheEmitter.$emit('hit', mockPayloads.cacheHit)
+    cacheEmitter.$emit('miss', mockPayloads.cacheMiss)
+    cacheEmitter.$emit('clear', {})
 
     expect(handlers.hit).toHaveBeenCalledWith(mockPayloads.cacheHit)
     expect(handlers.miss).toHaveBeenCalledWith(mockPayloads.cacheMiss)
@@ -56,11 +56,11 @@ describe('NSEmitter Integration Tests', () => {
       fail: vi.fn(),
     }
 
-    buildEmitter.on('success', handlers.success)
-    buildEmitter.on('fail', handlers.fail)
+    buildEmitter.$on('success', handlers.success)
+    buildEmitter.$on('fail', handlers.fail)
     baseEmitter.on('build', handlers.flat)
 
-    buildEmitter.emit('success', mockPayloads.buildSuccess)
+    buildEmitter.$emit('success', mockPayloads.buildSuccess)
     baseEmitter.emit('build', mockPayloads.build)
 
     expect(handlers.success).toHaveBeenCalledWith(mockPayloads.buildSuccess)
@@ -78,14 +78,14 @@ describe('NSEmitter Integration Tests', () => {
       all: vi.fn(),
     }
 
-    const unsubSuccess = runEmitter.on('success', handlers.success)
-    runEmitter.on('fail', handlers.fail)
-    runEmitter.on('*', handlers.all)
+    const unsubSuccess = runEmitter.$on('success', handlers.success)
+    runEmitter.$on('fail', handlers.fail)
+    runEmitter.$on('*', handlers.all)
 
-    runEmitter.emit('success', mockPayloads.runSuccess)
+    runEmitter.$emit('success', mockPayloads.runSuccess)
     unsubSuccess()
-    runEmitter.emit('success', mockPayloads.runSuccess)
-    runEmitter.emit('fail', mockPayloads.runFail)
+    runEmitter.$emit('success', mockPayloads.runSuccess)
+    runEmitter.$emit('fail', mockPayloads.runFail)
 
     expect(handlers.success).toHaveBeenCalledTimes(1)
     expect(handlers.fail).toHaveBeenCalledWith(mockPayloads.runFail)
@@ -102,12 +102,12 @@ describe('NSEmitter Integration Tests', () => {
       all: vi.fn(),
     }
 
-    buildEmitter.on('cache:hit', handlers.hit)
-    buildEmitter.on('cache:miss', handlers.miss)
-    buildEmitter.on('*', handlers.all)
+    buildEmitter.$on('cache:hit', handlers.hit)
+    buildEmitter.$on('cache:miss', handlers.miss)
+    buildEmitter.$on('*', handlers.all)
 
-    buildEmitter.emit('cache:hit', mockPayloads.buildCacheHit)
-    buildEmitter.emit('cache:miss', mockPayloads.buildCacheMiss)
+    buildEmitter.$emit('cache:hit', mockPayloads.buildCacheHit)
+    buildEmitter.$emit('cache:miss', mockPayloads.buildCacheMiss)
 
     expect(handlers.hit).toHaveBeenCalledWith(mockPayloads.buildCacheHit)
     expect(handlers.miss).toHaveBeenCalledWith(mockPayloads.buildCacheMiss)
@@ -117,10 +117,10 @@ describe('NSEmitter Integration Tests', () => {
     handlers.miss.mockClear()
     handlers.all.mockClear()
 
-    const buildCache = buildEmitter.namespace('cache')
+    const buildCache = buildEmitter.$ns('cache')
 
-    buildCache.emit('hit', mockPayloads.buildCacheHit)
-    buildCache.emit('miss', mockPayloads.buildCacheMiss)
+    buildCache.$emit('hit', mockPayloads.buildCacheHit)
+    buildCache.$emit('miss', mockPayloads.buildCacheMiss)
 
     expect(handlers.hit).toHaveBeenCalledWith(mockPayloads.buildCacheHit)
     expect(handlers.miss).toHaveBeenCalledWith(mockPayloads.buildCacheMiss)
@@ -137,15 +137,15 @@ describe('NSEmitter Integration Tests', () => {
       all: vi.fn(),
     }
 
-    cacheEmitter.on('clear', handlers.clear)
-    cacheEmitter.on('reset', handlers.reset)
-    cacheEmitter.on('*', handlers.all)
+    cacheEmitter.$on('clear', handlers.clear)
+    cacheEmitter.$on('reset', handlers.reset)
+    cacheEmitter.$on('*', handlers.all)
 
-    cacheEmitter.emit('clear', {})
-    cacheEmitter.emit('reset', {})
+    cacheEmitter.$emit('clear')
+    cacheEmitter.$emit('reset')
 
-    expect(handlers.clear).toHaveBeenCalledWith({})
-    expect(handlers.reset).toHaveBeenCalledWith({})
+    expect(handlers.clear).toHaveBeenCalledWith(undefined)
+    expect(handlers.reset).toHaveBeenCalledWith(undefined)
     expect(handlers.all).toHaveBeenCalledTimes(2)
   })
 })

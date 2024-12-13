@@ -9,32 +9,32 @@ export const createSafeEmitter = <TEvents extends EventMap>() => {
   const unsafeEmitter = createUnsafeEmitter()
 
   const safeEmitter: EventEmitter<TEvents> = {
-    on<E extends EventKey<TEvents> | '*'>(
+    $on<E extends EventKey<TEvents> | '*'>(
       event: ValidEventKey<TEvents, E & EventType>,
       handler: ValidHandler<TEvents, E & EventType>,
     ) {
       return unsafeEmitter.on(event, handler)
     },
 
-    once<E extends EventKey<TEvents>>(
+    $once<E extends EventKey<TEvents>>(
       event: ValidEventKey<TEvents, E & EventType>,
       handler: ValidHandler<TEvents, E & EventType>,
     ) {
       unsafeEmitter.once(event, handler)
     },
 
-    off<E extends EventKey<TEvents> | '*'>(
+    $off<E extends EventKey<TEvents> | '*'>(
       event: ValidEventKey<TEvents, E & EventType>,
       handler?: ValidHandler<TEvents, E & EventType>,
     ) {
       unsafeEmitter.off(event, handler)
     },
 
-    emit<E extends keyof TEvents & EventType>(event: E, payload?: EventPayload<TEvents, E>) {
+    $emit<E extends keyof TEvents & EventType>(event: E, payload?: EventPayload<TEvents, E>) {
       return unsafeEmitter.emit(event, payload)
     },
 
-    namespace<N extends NamespaceKeys<TEvents>>(
+    $ns<N extends NamespaceKeys<TEvents>>(
       ns: N,
     ): EventEmitter<FilterEventsByNamespace<TEvents, N>> {
       return createNSEmitter(unsafeEmitter, ns)

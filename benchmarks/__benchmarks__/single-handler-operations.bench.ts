@@ -4,7 +4,7 @@ import { emitters } from './__fixtures__/setup'
 
 describe('Single Handler Operations', () => {
   bench('@lokiverse/emitter - registration', () => {
-    emitters.lokiverse.on('start', () => {})
+    emitters.lokiverse.$on('start', () => {})
   })
 
   bench('NodeJS EventEmitter - registration', () => {

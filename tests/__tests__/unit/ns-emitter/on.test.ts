@@ -6,8 +6,8 @@ describe('NSEmitter.on()', () => {
     const emitter = createTestEmitter('cache')
     const handler = vi.fn()
 
-    emitter.on('hit', handler)
-    emitter.emit('hit', mockPayloads.cacheHit)
+    emitter.$on('hit', handler)
+    emitter.$emit('hit', mockPayloads.cacheHit)
 
     expect(handler).toHaveBeenCalledWith(mockPayloads.cacheHit)
     expect(handler).toHaveBeenCalledTimes(1)
@@ -17,9 +17,9 @@ describe('NSEmitter.on()', () => {
     const emitter = createTestEmitter('cache')
     const handler = vi.fn()
 
-    emitter.on('*', handler)
-    emitter.emit('hit', mockPayloads.cacheHit)
-    emitter.emit('miss', mockPayloads.cacheMiss)
+    emitter.$on('*', handler)
+    emitter.$emit('hit', mockPayloads.cacheHit)
+    emitter.$emit('miss', mockPayloads.cacheMiss)
 
     expect(handler).toHaveBeenCalledTimes(2)
     expect(handler).toHaveBeenCalledWith('cache:hit', mockPayloads.cacheHit)
@@ -30,9 +30,9 @@ describe('NSEmitter.on()', () => {
     const emitter = createTestEmitter('build')
     const handler = vi.fn()
 
-    const unsubscribe = emitter.on('success', handler)
+    const unsubscribe = emitter.$on('success', handler)
     unsubscribe()
-    emitter.emit('success', mockPayloads.buildSuccess)
+    emitter.$emit('success', mockPayloads.buildSuccess)
 
     expect(handler).not.toHaveBeenCalled()
   })

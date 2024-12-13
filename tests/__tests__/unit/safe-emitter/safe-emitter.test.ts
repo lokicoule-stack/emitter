@@ -7,8 +7,8 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.on('build', handler)
-      emitter.emit('build', mockPayloads.build)
+      emitter.$on('build', handler)
+      emitter.$emit('build', mockPayloads.build)
 
       expect(handler).toHaveBeenCalledWith(mockPayloads.build)
       expect(handler).toHaveBeenCalledTimes(1)
@@ -18,8 +18,8 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.on('cache:hit', handler)
-      emitter.emit('cache:hit', mockPayloads.cacheHit)
+      emitter.$on('cache:hit', handler)
+      emitter.$emit('cache:hit', mockPayloads.cacheHit)
 
       expect(handler).toHaveBeenCalledWith(mockPayloads.cacheHit)
       expect(handler).toHaveBeenCalledTimes(1)
@@ -29,22 +29,22 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.on('*', handler)
-      emitter.emit('build', mockPayloads.build)
-      emitter.emit('cache:hit', mockPayloads.cacheHit)
+      emitter.$on('*', handler)
+      emitter.$emit('build', mockPayloads.build)
+      emitter.$emit('cache:hit', mockPayloads.cacheHit)
 
       expect(handler).toHaveBeenCalledTimes(2)
-      expect(handler).toHaveBeenCalledWith('build', mockPayloads.build)
-      expect(handler).toHaveBeenCalledWith('cache:hit', mockPayloads.cacheHit)
+      expect(handler).toHaveBeenNthCalledWith(1, 'build', mockPayloads.build)
+      expect(handler).toHaveBeenNthCalledWith(2, 'cache:hit', mockPayloads.cacheHit)
     })
 
     it('should return unsubscribe function', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      const unsubscribe = emitter.on('build', handler)
+      const unsubscribe = emitter.$on('build', handler)
       unsubscribe()
-      emitter.emit('build', mockPayloads.build)
+      emitter.$emit('build', mockPayloads.build)
 
       expect(handler).not.toHaveBeenCalled()
     })
@@ -55,9 +55,9 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.once('build', handler)
-      emitter.emit('build', mockPayloads.build)
-      emitter.emit('build', mockPayloads.build)
+      emitter.$once('build', handler)
+      emitter.$emit('build', mockPayloads.build)
+      emitter.$emit('build', mockPayloads.build)
 
       expect(handler).toHaveBeenCalledTimes(1)
       expect(handler).toHaveBeenCalledWith(mockPayloads.build)
@@ -67,9 +67,9 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.once('cache:hit', handler)
-      emitter.emit('cache:hit', mockPayloads.cacheHit)
-      emitter.emit('cache:hit', mockPayloads.cacheHit)
+      emitter.$once('cache:hit', handler)
+      emitter.$emit('cache:hit', mockPayloads.cacheHit)
+      emitter.$emit('cache:hit', mockPayloads.cacheHit)
 
       expect(handler).toHaveBeenCalledTimes(1)
       expect(handler).toHaveBeenCalledWith(mockPayloads.cacheHit)
@@ -81,9 +81,9 @@ describe('SafeEmitter Unit Tests', () => {
       const emitter = createTestEmitter()
       const handler = vi.fn()
 
-      emitter.on('build', handler)
-      emitter.off('build', handler)
-      emitter.emit('build', mockPayloads.build)
+      emitter.$on('build', handler)
+      emitter.$off('build', handler)
+      emitter.$emit('build', mockPayloads.build)
 
       expect(handler).not.toHaveBeenCalled()
     })
@@ -93,10 +93,10 @@ describe('SafeEmitter Unit Tests', () => {
       const handler1 = vi.fn()
       const handler2 = vi.fn()
 
-      emitter.on('build', handler1)
-      emitter.on('build', handler2)
-      emitter.off('build')
-      emitter.emit('build', mockPayloads.build)
+      emitter.$on('build', handler1)
+      emitter.$on('build', handler2)
+      emitter.$off('build')
+      emitter.$emit('build', mockPayloads.build)
 
       expect(handler1).not.toHaveBeenCalled()
       expect(handler2).not.toHaveBeenCalled()
@@ -106,11 +106,11 @@ describe('SafeEmitter Unit Tests', () => {
   describe('namespace', () => {
     it('should create namespaced emitter', () => {
       const emitter = createTestEmitter()
-      const cacheEmitter = emitter.namespace('cache')
+      const cacheEmitter = emitter.$ns('cache')
       const handler = vi.fn()
 
-      cacheEmitter.on('hit', handler)
-      cacheEmitter.emit('hit', mockPayloads.cacheHit)
+      cacheEmitter.$on('hit', handler)
+      cacheEmitter.$emit('hit', mockPayloads.cacheHit)
 
       expect(handler).toHaveBeenCalledWith(mockPayloads.cacheHit)
     })

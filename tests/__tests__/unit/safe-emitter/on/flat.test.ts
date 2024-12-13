@@ -6,8 +6,8 @@ describe('SafeEmitter.on() - Flat Events', () => {
     const emitter = createTestEmitter()
     const handler = vi.fn()
 
-    emitter.on('build', handler)
-    emitter.emit('build', mockPayloads.build)
+    emitter.$on('build', handler)
+    emitter.$emit('build', mockPayloads.build)
 
     expect(handler).toHaveBeenCalledWith(mockPayloads.build)
     expect(handler).toHaveBeenCalledTimes(1)
@@ -17,9 +17,9 @@ describe('SafeEmitter.on() - Flat Events', () => {
     const emitter = createTestEmitter()
     const handler = vi.fn()
 
-    const unsubscribe = emitter.on('build', handler)
+    const unsubscribe = emitter.$on('build', handler)
     unsubscribe()
-    emitter.emit('build', mockPayloads.build)
+    emitter.$emit('build', mockPayloads.build)
 
     expect(handler).not.toHaveBeenCalled()
   })

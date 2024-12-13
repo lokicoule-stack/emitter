@@ -3,7 +3,7 @@ import type { ValidHandler } from './handlers'
 import type { FilterEventsByNamespace, NamespaceKeys } from './ns'
 
 /**
- * Unsafe interface (for internal use only)
+ * Base interface for internal event emitter operations
  */
 export interface UnsafeEventEmitter {
   on(event: EventType, handler: Function): () => void
@@ -13,28 +13,38 @@ export interface UnsafeEventEmitter {
 }
 
 /**
- * Public interface
+ * Core public API for event emitting
  */
-export interface EventEmitter<TEvents extends EventMap> {
-  on<E extends EventKey<TEvents> | '*'>(
+export interface BaseEmitter<TEvents extends EventMap> {
+  $on<E extends EventKey<TEvents> | '*'>(
     event: ValidEventKey<TEvents, E & EventType>,
     handler: ValidHandler<TEvents, E & EventType>,
   ): () => void
 
-  once<E extends EventKey<TEvents>>(
+  $once<E extends EventKey<TEvents>>(
     event: ValidEventKey<TEvents, E & EventType>,
     handler: ValidHandler<TEvents, E & EventType>,
   ): void
 
-  off<E extends EventKey<TEvents> | '*'>(
+  $off<E extends EventKey<TEvents> | '*'>(
     event: ValidEventKey<TEvents, E & EventType>,
     handler?: ValidHandler<TEvents, E & EventType>,
   ): void
 
-  emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): void
-  emit<E extends keyof TEvents & EventType>(event: undefined extends TEvents[E] ? E : never): void
+  $emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): void
+  $emit<E extends keyof TEvents & EventType>(event: undefined extends TEvents[E] ? E : never): void
+}
 
-  namespace<N extends NamespaceKeys<TEvents>>(
-    ns: N,
-  ): EventEmitter<FilterEventsByNamespace<TEvents, N>>
+/**
+ * Extends BaseEmitter with namespace capabilities
+ */
+export interface EventEmitter<TEvents extends EventMap> extends BaseEmitter<TEvents> {
+  $ns<N extends NamespaceKeys<TEvents>>(ns: N): EventEmitter<FilterEventsByNamespace<TEvents, N>>
+}
+
+/**
+ * Full type including recursive namespace structure
+ */
+export type NamespaceTree<TEvents extends EventMap> = EventEmitter<TEvents> & {
+  [K in NamespaceKeys<TEvents>]: NamespaceTree<FilterEventsByNamespace<TEvents, K>>
 }

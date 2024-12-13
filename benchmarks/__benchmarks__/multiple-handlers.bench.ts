@@ -5,7 +5,7 @@ import { emitters, HANDLERS_COUNT } from './__fixtures__/setup'
 describe('Multiple Handlers (100 handlers)', () => {
   bench('@lokiverse/emitter - multiple registration', () => {
     for (let i = 0; i < HANDLERS_COUNT; i++) {
-      emitters.lokiverse.on('start', () => {})
+      emitters.lokiverse.$on('start', () => {})
     }
   })
 

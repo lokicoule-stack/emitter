@@ -1,4 +1,4 @@
-export type EventType = string | symbol
+export type EventType = string
 export type WildcardPattern = '*' | `${string}:*`
 
 export type BaseEvent = Record<EventType, unknown>

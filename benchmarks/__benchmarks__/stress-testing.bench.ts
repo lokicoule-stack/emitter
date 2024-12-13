@@ -3,9 +3,9 @@ import { emitters, ITERATIONS, TEST_PAYLOAD } from './__fixtures__/setup'
 
 describe('Stress Testing', () => {
   bench('@lokiverse/emitter - high frequency emissions', () => {
-    emitters.lokiverse.on('start', () => {})
+    emitters.lokiverse.$on('start', () => {})
     for (let i = 0; i < ITERATIONS * 10; i++) {
-      emitters.lokiverse.emit('start', TEST_PAYLOAD)
+      emitters.lokiverse.$emit('start', TEST_PAYLOAD)
     }
   })
 

@@ -5,8 +5,8 @@ import { emitters, HANDLERS_COUNT, TEST_PAYLOAD } from './__fixtures__/setup'
 describe('Emission Performance', () => {
   describe('Single Handler Emission', () => {
     bench('@lokiverse/emitter - single handler emission', () => {
-      emitters.lokiverse.on('start', () => {})
-      emitters.lokiverse.emit('start', TEST_PAYLOAD)
+      emitters.lokiverse.$on('start', () => {})
+      emitters.lokiverse.$emit('start', TEST_PAYLOAD)
     })
 
     bench('NodeJS EventEmitter - single handler emission', () => {
@@ -28,9 +28,9 @@ describe('Emission Performance', () => {
   describe('Multiple Handlers (100 handlers)', () => {
     bench('@lokiverse/emitter - multiple handlers emission', () => {
       for (let i = 0; i < HANDLERS_COUNT; i++) {
-        emitters.lokiverse.on('start', () => {})
+        emitters.lokiverse.$on('start', () => {})
       }
-      emitters.lokiverse.emit('start', TEST_PAYLOAD)
+      emitters.lokiverse.$emit('start', TEST_PAYLOAD)
     })
 
     bench('NodeJS EventEmitter - multiple handlers emission', () => {

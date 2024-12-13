@@ -3,9 +3,9 @@ import { emitters, ITERATIONS, TEST_PAYLOAD } from './__fixtures__/setup'
 
 describe('Concurrency Handling', () => {
   bench('@lokiverse/emitter - concurrent emissions', () => {
-    emitters.lokiverse.on('start', () => {})
+    emitters.lokiverse.$on('start', () => {})
     for (let i = 0; i < ITERATIONS; i++) {
-      setTimeout(() => emitters.lokiverse.emit('start', TEST_PAYLOAD), 0)
+      setTimeout(() => emitters.lokiverse.$emit('start', TEST_PAYLOAD), 0)
     }
   })
 

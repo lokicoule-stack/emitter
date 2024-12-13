@@ -3,8 +3,8 @@ import { emitters, TEST_PAYLOAD } from './__fixtures__/setup'
 
 describe('Once Handlers', () => {
   bench('@lokiverse/emitter - once registration and trigger', () => {
-    emitters.lokiverse.once('start', () => {})
-    emitters.lokiverse.emit('start', TEST_PAYLOAD)
+    emitters.lokiverse.$once('start', () => {})
+    emitters.lokiverse.$emit('start', TEST_PAYLOAD)
   })
 
   bench('NodeJS EventEmitter - once registration and trigger', () => {

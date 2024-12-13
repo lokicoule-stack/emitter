@@ -6,9 +6,9 @@ describe('NSEmitter.off()', () => {
     const emitter = createTestEmitter('run')
     const handler = vi.fn()
 
-    emitter.on('success', handler)
-    emitter.off('success', handler)
-    emitter.emit('success', mockPayloads.runSuccess)
+    emitter.$on('success', handler)
+    emitter.$off('success', handler)
+    emitter.$emit('success', mockPayloads.runSuccess)
 
     expect(handler).not.toHaveBeenCalled()
   })
@@ -18,10 +18,10 @@ describe('NSEmitter.off()', () => {
     const handler = vi.fn()
     const wildcardHandler = vi.fn()
 
-    emitter.on('hit', handler)
-    emitter.on('*', wildcardHandler)
-    emitter.off('*', wildcardHandler)
-    emitter.emit('hit', mockPayloads.cacheHit)
+    emitter.$on('hit', handler)
+    emitter.$on('*', wildcardHandler)
+    emitter.$off('*', wildcardHandler)
+    emitter.$emit('hit', mockPayloads.cacheHit)
 
     expect(handler).toHaveBeenCalledWith(mockPayloads.cacheHit)
     expect(wildcardHandler).not.toHaveBeenCalled()

@@ -7,8 +7,8 @@ describe('Payload Size Impact', () => {
 
   describe('Large Payload', () => {
     bench('@lokiverse/emitter - large payload', () => {
-      emitters.lokiverse.on('data', () => {})
-      emitters.lokiverse.emit('data', largePayload)
+      emitters.lokiverse.$on('data', () => {})
+      emitters.lokiverse.$emit('data', largePayload)
     })
 
     bench('NodeJS EventEmitter - large payload', () => {
@@ -29,8 +29,8 @@ describe('Payload Size Impact', () => {
 
   describe('Small Payload', () => {
     bench('@lokiverse/emitter - small payload', () => {
-      emitters.lokiverse.on('data', () => {})
-      emitters.lokiverse.emit('data', smallPayload)
+      emitters.lokiverse.$on('data', () => {})
+      emitters.lokiverse.$emit('data', smallPayload)
     })
 
     bench('NodeJS EventEmitter - small payload', () => {

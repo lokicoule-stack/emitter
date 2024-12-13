@@ -76,7 +76,7 @@ export const createUnsafeEmitter = (store: Store = createStore()): UnsafeEventEm
 
     store.wildcardListeners.forEach((entry) => {
       if (matchesWildcard(entry.pattern, event)) {
-        entry.handler(payload)
+        entry.handler(event, payload)
       }
     })
   }
