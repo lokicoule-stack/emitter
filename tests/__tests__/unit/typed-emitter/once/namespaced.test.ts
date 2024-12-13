@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from '../__fixtures__/setup'
 
-describe('SafeEmitter.once() - Namespaced Events', () => {
+describe('TypedEmitter.once() - Namespaced Events', () => {
   it('should call handler only once for namespaced event', () => {
     const emitter = createTestEmitter()
     const handler = vi.fn()

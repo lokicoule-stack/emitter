@@ -1,11 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createSafeEmitter } from '../../../src/emitters/safe-emitter'
-import type { TestEvents } from '../../__fixtures__/events'
-import { mockPayloads } from '../../__fixtures__/events'
+import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('SafeEmitter Integration Tests', () => {
+describe('TypedEmitter Integration Tests', () => {
   it('should handle complex event flow', () => {
-    const emitter = createSafeEmitter<TestEvents>()
+    const emitter = createTestEmitter()
     const handlers = {
       build: vi.fn(),
       buildSuccess: vi.fn(),
@@ -34,7 +32,7 @@ describe('SafeEmitter Integration Tests', () => {
   })
 
   it('should handle multiple namespaces', () => {
-    const emitter = createSafeEmitter<TestEvents>()
+    const emitter = createTestEmitter()
     const cacheEmitter = emitter.$ns('cache')
     const buildEmitter = emitter.$ns('build')
 
@@ -62,7 +60,7 @@ describe('SafeEmitter Integration Tests', () => {
   })
 
   it('should handle unsubscription across namespaces', () => {
-    const emitter = createSafeEmitter<TestEvents>()
+    const emitter = createTestEmitter()
     const runEmitter = emitter.$ns('run')
     const handlers = {
       runSuccess: vi.fn(),
@@ -82,7 +80,7 @@ describe('SafeEmitter Integration Tests', () => {
   })
 
   it('should handle empty payload events', () => {
-    const emitter = createSafeEmitter<TestEvents>()
+    const emitter = createTestEmitter()
     const cacheEmitter = emitter.$ns('cache')
     const handler = vi.fn()
 

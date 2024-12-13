@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('NSEmitter.on()', () => {
+describe('NamespacedEmitter.on()', () => {
   it('should register and call namespaced event handler', () => {
     const emitter = createTestEmitter('cache')
     const handler = vi.fn()

@@ -7,3 +7,5 @@ export type FilterEventsByNamespace<TEvents extends EventMap, N extends string> 
 export type NamespaceKeys<T extends EventMap> = {
   [K in keyof T]: K extends `${infer N}:${string}` ? N : never
 }[keyof T]
+
+export type ExtractNamespace<E extends string> = E extends `${infer NS}:${string}` ? NS : never

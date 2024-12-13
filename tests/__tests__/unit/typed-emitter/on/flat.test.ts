@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from '../__fixtures__/setup'
 
-describe('SafeEmitter.on() - Flat Events', () => {
+describe('TypedEmitter.on() - Flat Events', () => {
   it('should register and call flat event handler', () => {
     const emitter = createTestEmitter()
     const handler = vi.fn()

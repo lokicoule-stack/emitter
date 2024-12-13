@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('SafeEmitter.namespace()', () => {
+describe('TypedEmitter.namespace()', () => {
   it('should create namespaced emitter', () => {
     const emitter = createTestEmitter()
     const cacheEmitter = emitter.$ns('cache')

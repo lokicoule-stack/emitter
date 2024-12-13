@@ -1,5 +1,6 @@
+import type { WildcardPattern } from './wildcard'
+
 export type EventType = string
-export type WildcardPattern = '*' | `${string}:*`
 
 export type BaseEvent = Record<EventType, unknown>
 

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('NSEmitter.off()', () => {
+describe('NamespacedEmitter.off()', () => {
   it('should remove specific handler', () => {
     const emitter = createTestEmitter('run')
     const handler = vi.fn()

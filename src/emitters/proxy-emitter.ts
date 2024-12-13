@@ -1,24 +1,23 @@
-import type { EventEmitter, NamespaceTree } from '../types/emitters'
+import type { EventEmitter, TypedEmitter } from '../types/emitters'
 import type { EventMap } from '../types/events'
 import type { NamespaceKeys } from '../types/ns'
-import { createSafeEmitter } from './safe-emitter'
 
 export const createProxyEmitter = <TEvents extends EventMap>(
-  emitter: EventEmitter<TEvents> = createSafeEmitter<TEvents>(),
-) => {
-  const handler: ProxyHandler<EventEmitter<TEvents>> = {
-    get(target, prop: string | symbol) {
+  emitter: TypedEmitter<TEvents>,
+): EventEmitter<TEvents> => {
+  const cache = new Map<string, EventEmitter<any>>()
+
+  return new Proxy(emitter, {
+    get(target, prop: string) {
       if (prop in target) {
         return target[prop as keyof typeof target]
       }
 
-      if (typeof prop === 'string') {
-        return createProxyEmitter(target.$ns(prop as NamespaceKeys<TEvents>))
+      if (!cache.has(prop)) {
+        cache.set(prop, createProxyEmitter(target.$ns(prop as NamespaceKeys<TEvents>)))
       }
 
-      return undefined
+      return cache.get(prop)
     },
-  }
-
-  return new Proxy(emitter, handler) as NamespaceTree<TEvents>
+  }) as EventEmitter<TEvents>
 }

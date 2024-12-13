@@ -1,10 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createUnsafeEmitter } from '../../../src/emitters/unsafe-emitter'
-import { mockPayloads } from '../../__fixtures__/events'
+import { createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('UnsafeEmitter Integration', () => {
+describe('CoreEmitter Integration', () => {
   it('should handle complex event flow', () => {
-    const emitter = createUnsafeEmitter()
+    const emitter = createTestEmitter()
     const handlers = {
       build: vi.fn(),
       cache: vi.fn(),
@@ -24,7 +23,7 @@ describe('UnsafeEmitter Integration', () => {
   })
 
   it('should handle event unsubscription correctly', () => {
-    const emitter = createUnsafeEmitter()
+    const emitter = createTestEmitter()
     const handlers = {
       build: vi.fn(),
       buildSuccess: vi.fn(),
@@ -48,7 +47,7 @@ describe('UnsafeEmitter Integration', () => {
   })
 
   it('should handle namespace events correctly', () => {
-    const emitter = createUnsafeEmitter()
+    const emitter = createTestEmitter()
     const cacheHandlers = {
       hit: vi.fn(),
       miss: vi.fn(),
@@ -75,7 +74,7 @@ describe('UnsafeEmitter Integration', () => {
   })
 
   it('should handle events with same name as namespace', () => {
-    const emitter = createUnsafeEmitter()
+    const emitter = createTestEmitter()
     const buildHandlers = {
       main: vi.fn(),
       success: vi.fn(),

@@ -1,4 +1,5 @@
-import type { EventType, WildcardPattern } from './events'
+import type { EventType } from './events'
+import type { WildcardPattern } from './wildcard'
 
 export type Store = {
   listeners: Map<EventType, Set<Function>>

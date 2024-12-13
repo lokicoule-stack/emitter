@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it, vitest } from 'vitest'
-import type { EventEmitter } from '../../../src/types/emitters'
+import type { TypedEmitter } from '../../../src/types/emitters'
 
 describe('EventEmitter API', () => {
   const emitter = {
@@ -8,14 +8,16 @@ describe('EventEmitter API', () => {
     $off: vitest.fn<(...args: unknown[]) => void>(),
     $emit: vitest.fn<(...args: unknown[]) => boolean>(),
     $ns: vitest.fn<(...args: unknown[]) => unknown>(),
-  } as EventEmitter<MyEvents>
+  } as TypedEmitter<MyEvents>
 
   type MyEvents = {
     'auth:login': { userId: string }
     'auth:logout': void
+    'data:logout': void
     'data:update': { data: unknown }
     'system:monitor:cpu': { usage: number }
     'system:monitor:memory': { usage: number }
+    'system:os:network': { usage: number }
   }
 
   it('should type check regular event handlers', () => {
@@ -49,16 +51,31 @@ describe('EventEmitter API', () => {
         | 'auth:login'
         | 'auth:logout'
         | 'data:update'
+        | 'data:logout'
         | 'system:monitor:cpu'
         | 'system:monitor:memory'
+        | 'system:os:network'
       >()
       expectTypeOf(payload).toMatchTypeOf<
         { userId: string } | void | { data: unknown } | { usage: number }
       >()
     })
 
+    emitter.$on('data:*', (event, payload) => {
+      expectTypeOf(event).toMatchTypeOf<'update' | 'logout'>()
+      expectTypeOf(payload).toMatchTypeOf<{ data: unknown } | void>()
+    })
+
+    emitter.$ns('system').$on('os:*', (event, payload) => {
+      expectTypeOf(event).toMatchTypeOf<'network'>()
+      expectTypeOf(payload).toMatchTypeOf<{ usage: number }>()
+    })
+
     // @ts-expect-error - Once doesn't support wildcard
     emitter.$once('*', () => {})
+
+    // @ts-expect-error - Doesn't support nested wildcards
+    emitter.$on('system:os:*', () => {})
   })
 
   it('should type check off method', () => {

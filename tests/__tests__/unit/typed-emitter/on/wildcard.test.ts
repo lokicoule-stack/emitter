@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestEmitter, mockPayloads } from '../__fixtures__/setup'
 
-describe('SafeEmitter.on() - Wildcard Events', () => {
+describe('TypedEmitter.on() - Wildcard Events', () => {
   it('should handle wildcard listeners', () => {
     const emitter = createTestEmitter()
     const handler = vi.fn()

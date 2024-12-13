@@ -1,14 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createNSEmitter } from '../../../src/emitters/ns-emitter'
-import { createUnsafeEmitter } from '../../../src/emitters/unsafe-emitter'
-import type { TestEvents } from '../../__fixtures__/events'
-import { mockPayloads } from '../../__fixtures__/events'
+import { createCoreEmitterTest, createTestEmitter, mockPayloads } from './__fixtures__/setup'
 
-describe('NSEmitter Integration Tests', () => {
+describe('NamespacedEmitter Integration Tests', () => {
   it('should handle multiple namespaces independently', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const buildEmitter = createNSEmitter<TestEvents, 'build'>(baseEmitter, 'build')
-    const cacheEmitter = createNSEmitter<TestEvents, 'cache'>(baseEmitter, 'cache')
+    const buildEmitter = createTestEmitter<'build'>('build')
+    const cacheEmitter = createTestEmitter<'cache'>('cache')
 
     const buildHandler = vi.fn()
     const cacheHandler = vi.fn()
@@ -24,8 +20,7 @@ describe('NSEmitter Integration Tests', () => {
   })
 
   it('should handle complex event flow with wildcards', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const cacheEmitter = createNSEmitter<TestEvents, 'cache'>(baseEmitter, 'cache')
+    const cacheEmitter = createTestEmitter<'cache'>('cache')
 
     const handlers = {
       hit: vi.fn(),
@@ -47,8 +42,8 @@ describe('NSEmitter Integration Tests', () => {
   })
 
   it('should handle namespace collisions with flat events', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const buildEmitter = createNSEmitter<TestEvents, 'build'>(baseEmitter, 'build')
+    const baseEmitter = createCoreEmitterTest()
+    const buildEmitter = createTestEmitter<'build'>('build')
 
     const handlers = {
       flat: vi.fn(),
@@ -69,8 +64,7 @@ describe('NSEmitter Integration Tests', () => {
   })
 
   it('should handle lifecycle of multiple event types', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const runEmitter = createNSEmitter<TestEvents, 'run'>(baseEmitter, 'run')
+    const runEmitter = createTestEmitter<'run'>('run')
 
     const handlers = {
       success: vi.fn(),
@@ -93,8 +87,7 @@ describe('NSEmitter Integration Tests', () => {
   })
 
   it('should handle nested namespaces with wildcard listeners', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const buildEmitter = createNSEmitter<TestEvents, 'build'>(baseEmitter, 'build')
+    const buildEmitter = createTestEmitter<'build'>('build')
 
     const handlers = {
       hit: vi.fn(),
@@ -128,8 +121,7 @@ describe('NSEmitter Integration Tests', () => {
   })
 
   it('should handle empty payload events', () => {
-    const baseEmitter = createUnsafeEmitter()
-    const cacheEmitter = createNSEmitter<TestEvents, 'cache'>(baseEmitter, 'cache')
+    const cacheEmitter = createTestEmitter<'cache'>('cache')
 
     const handlers = {
       clear: vi.fn(),

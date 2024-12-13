@@ -1,12 +1,13 @@
 import type { EventKey, EventMap, EventPayload, EventType, ValidEventKey } from './events'
-import type { ValidHandler } from './handlers'
+import type { ValidHandler, WildcardHandler } from './handlers'
 import type { IsUnknown } from './helpers'
 import type { FilterEventsByNamespace, NamespaceKeys } from './ns'
+import type { GlobalWildcard, NamespaceWildcard, WildcardPatterns } from './wildcard'
 
 /**
- * Base interface for internal event emitter operations
+ * Core implementation interface without type safety
  */
-export interface UnsafeEventEmitter {
+export interface CoreEmitter {
   on(event: EventType, handler: Function): () => void
   once(event: EventType, handler: Function): void
   off(event: EventType, handler?: Function): void
@@ -14,12 +15,16 @@ export interface UnsafeEventEmitter {
 }
 
 /**
- * Core public API for event emitting
+ * Type-safe event emitter interface with namespace support
  */
-export interface BaseEmitter<TEvents extends EventMap> {
-  $on<E extends EventKey<TEvents> | '*'>(
-    event: ValidEventKey<TEvents, E & EventType>,
-    handler: ValidHandler<TEvents, E & EventType>,
+export interface TypedEmitter<TEvents extends EventMap> {
+  $on<E extends EventKey<TEvents> | WildcardPatterns<TEvents>>(
+    event: E,
+    handler: E extends GlobalWildcard
+      ? WildcardHandler<TEvents>
+      : E extends NamespaceWildcard<infer NS>
+        ? WildcardHandler<FilterEventsByNamespace<TEvents, NS>>
+        : ValidHandler<TEvents, E & keyof TEvents & string>,
   ): () => void
 
   $once<E extends EventKey<TEvents>>(
@@ -27,27 +32,26 @@ export interface BaseEmitter<TEvents extends EventMap> {
     handler: ValidHandler<TEvents, E & EventType>,
   ): void
 
-  $off<E extends EventKey<TEvents> | '*'>(
-    event: ValidEventKey<TEvents, E & EventType>,
-    handler?: ValidHandler<TEvents, E & EventType>,
+  $off<E extends EventKey<TEvents> | WildcardPatterns<TEvents>>(
+    event: E,
+    handler?: E extends GlobalWildcard
+      ? WildcardHandler<TEvents>
+      : E extends NamespaceWildcard<infer NS>
+        ? WildcardHandler<FilterEventsByNamespace<TEvents, NS>>
+        : ValidHandler<TEvents, E & keyof TEvents & string>,
   ): void
 
   $emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): void
   $emit<E extends keyof TEvents & EventType>(
     event: IsUnknown<TEvents[E]> extends true ? E : never,
   ): void
+
+  $ns<N extends NamespaceKeys<TEvents>>(ns: N): TypedEmitter<FilterEventsByNamespace<TEvents, N>>
 }
 
 /**
- * Extends BaseEmitter with namespace capabilities
+ * Complete event emitter type with method and property-based namespace access
  */
-export interface EventEmitter<TEvents extends EventMap> extends BaseEmitter<TEvents> {
-  $ns<N extends NamespaceKeys<TEvents>>(ns: N): EventEmitter<FilterEventsByNamespace<TEvents, N>>
-}
-
-/**
- * Full type including recursive namespace structure
- */
-export type NamespaceTree<TEvents extends EventMap> = EventEmitter<TEvents> & {
-  [K in NamespaceKeys<TEvents>]: NamespaceTree<FilterEventsByNamespace<TEvents, K>>
+export type EventEmitter<TEvents extends EventMap> = TypedEmitter<TEvents> & {
+  [K in NamespaceKeys<TEvents>]: EventEmitter<FilterEventsByNamespace<TEvents, K>>
 }
