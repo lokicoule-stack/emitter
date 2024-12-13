@@ -1,5 +1,6 @@
 import type { EventKey, EventMap, EventPayload, EventType, ValidEventKey } from './events'
 import type { ValidHandler } from './handlers'
+import type { IsUnknown } from './helpers'
 import type { FilterEventsByNamespace, NamespaceKeys } from './ns'
 
 /**
@@ -32,7 +33,9 @@ export interface BaseEmitter<TEvents extends EventMap> {
   ): void
 
   $emit<E extends keyof TEvents & EventType>(event: E, payload: EventPayload<TEvents, E>): void
-  $emit<E extends keyof TEvents & EventType>(event: undefined extends TEvents[E] ? E : never): void
+  $emit<E extends keyof TEvents & EventType>(
+    event: IsUnknown<TEvents[E]> extends true ? E : never,
+  ): void
 }
 
 /**
