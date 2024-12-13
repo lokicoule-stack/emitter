@@ -1,1 +1,1 @@
-export { createSafeEmitter as createEmitter } from './emitters/safe-emitter'
+export { createProxyEmitter as createEmitter } from './emitters/proxy-emitter'
