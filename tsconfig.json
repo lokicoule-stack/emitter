@@ -8,19 +8,28 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+
+    /* Output */
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "sourceMap": true,
+
+    /* ESM Specific */
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "verbatimModuleSyntax": true
+    "noUncheckedSideEffectImports": true
   },
   "include": ["src"]
 }

@@ -1,0 +1,12 @@
+{
+  "name": "@lokiverse/scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate:build": "node --loader ts-node/esm validate-build.ts"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "ts-node": "latest"
+  }
+}
