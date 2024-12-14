@@ -1,5 +1,5 @@
 {
-  "name": "@lokicoule/event-emitter-benchmarks",
+  "name": "@lokiverse/benchmarks",
   "private": true,
   "type": "module",
   "scripts": {
