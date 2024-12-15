@@ -30,18 +30,19 @@
   },
   "scripts": {
     "bench": "pnpm --filter \"@lokiverse/benchmarks\" bench",
-    "prebuild": "pnpm run clean",
     "build": "rollup -c",
     "check:size": "pnpm --filter \"@lokiverse/scripts\" check:size",
-    "clean": "rm -rf dist",
     "format": "prettier --write .",
     "lint": "eslint . --ext=.ts",
-    "test": "vitest",
+    "release": "pnpm run build && changeset publish",
+    "test": "vitest --run",
     "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit && vitest --typecheck.only",
-    "validate:build": "pnpm --filter \"@lokiverse/scripts\" validate:build"
+    "validate:build": "pnpm --filter \"@lokiverse/scripts\" validate:build",
+    "version": "changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.10",
     "@eslint/js": "^9.16.0",
     "@lokiverse/prettier-config": "^0.2.1",
     "@rollup/plugin-commonjs": "^28.0.1",

@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    branches: ['main']
+    paths:
+      - '.changeset/**'
+      - 'CHANGELOG.md'
+  pull_request:
+    branches: ['main']
+    paths:
+      - '.changeset/**'
+      - 'CHANGELOG.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+  coverage:
+    uses: ./.github/workflows/coverage.yml
+
+  release:
+    needs: [checks, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Build Environment
+        uses: ./.github/actions/ci-setup
+
+      - name: Check for changesets
+        run: pnpm changeset status --since=main
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Install dependencies for scripts
+        shell: bash
+        run: pnpm install --filter @lokiverse/scripts --frozen-lockfile
+
+      - name: Validate build
+        run: pnpm run validate:build
+
+      - name: Check bundle size
+        run: pnpm run check:size
+
+      - name: Create Release Pull Request or Publish
+        run: echo "Skipping release for now"
