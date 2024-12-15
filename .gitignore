@@ -37,6 +37,9 @@ testem.log
 /typings
 tsconfig.vitest-temp.json
 tsconfig.tsbuildinfo
+coverage/
+.coverage/
+*.lcov
 
 # System Files
 .DS_Store
