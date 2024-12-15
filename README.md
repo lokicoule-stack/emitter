@@ -7,6 +7,7 @@
 [![npm version](https://img.shields.io/npm/v/@lokiverse/emitter.svg)](https://www.npmjs.com/package/@lokiverse/emitter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![codecov](https://codecov.io/gh/lokicoule-stack/emitter/branch/main/graph/badge.svg)](https://codecov.io/gh/lokicoule-stack/emitter)
 
 </div>
 
