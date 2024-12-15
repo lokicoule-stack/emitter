@@ -8,6 +8,10 @@ on:
   workflow_call:
   workflow_dispatch:
 
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest

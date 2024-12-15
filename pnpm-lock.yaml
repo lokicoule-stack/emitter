@@ -11,6 +11,9 @@ devDependencies:
   '@eslint/js':
     specifier: ^9.16.0
     version: 9.16.0
+  '@lokiverse/changesets-config':
+    specifier: ^0.1.0
+    version: 0.1.0
   '@lokiverse/prettier-config':
     specifier: ^0.2.1
     version: 0.2.1(prettier@3.4.1)
@@ -643,6 +646,10 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+    dev: true
+
+  /@lokiverse/changesets-config@0.1.0:
+    resolution: {integrity: sha512-VxSFMrFFEaebETGNhH6xa04VLTXzUw5USTcSBOOsqwoH55ZZ1955sLxb6yX3LOqi3rdQGxwpvmcN3bRbTVOSFA==}
     dev: true
 
   /@lokiverse/prettier-config@0.2.1(prettier@3.4.1):
