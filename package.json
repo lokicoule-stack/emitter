@@ -26,14 +26,14 @@
   ],
   "sideEffects": false,
   "engines": {
-    "node": ">=23.0.0"
+    "node": ">=20.18.1"
   },
   "scripts": {
     "bench": "pnpm --filter \"@lokiverse/benchmarks\" bench",
     "build": "rollup -c",
     "check:size": "pnpm --filter \"@lokiverse/scripts\" check:size",
     "format": "prettier --write .",
-    "lint": "eslint . --ext=.ts",
+    "lint": "eslint .",
     "release": "pnpm run build && changeset publish",
     "test": "vitest --run",
     "test:coverage": "vitest run --coverage",
