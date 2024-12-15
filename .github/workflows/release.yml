@@ -45,15 +45,14 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Install dependencies for scripts
-        shell: bash
-        run: pnpm install --filter @lokiverse/scripts --frozen-lockfile
-
-      - name: Validate build
-        run: pnpm run validate:build
-
-      - name: Check bundle size
-        run: pnpm run check:size
+      - name: Validate Bundle
+        uses: ./.github/actions/validate-bundle
 
       - name: Create Release Pull Request or Publish
-        run: echo "Skipping release for now"
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

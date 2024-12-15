@@ -1,0 +1,23 @@
+name: Validate Bundle
+description: Installs script dependencies and validates the build output including bundle size
+
+inputs:
+  scripts-package:
+    description: 'Name of the scripts package in workspace'
+    required: false
+    default: '@lokiverse/scripts'
+
+runs:
+  using: composite
+  steps:
+    - name: Install dependencies for scripts
+      shell: bash
+      run: pnpm install --filter ${{ inputs.scripts-package }} --frozen-lockfile
+
+    - name: Validate build output
+      shell: bash
+      run: pnpm run validate:build
+
+    - name: Check bundle size
+      shell: bash
+      run: pnpm run check:size
