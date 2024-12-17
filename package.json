@@ -2,24 +2,40 @@
   "name": "@lokiverse/emitter",
   "version": "0.0.0",
   "private": false,
-  "description": "",
-  "keywords": [],
-  "author": "Loik F.",
+  "description": "TypeScript-first event emitter with proper namespacing, type safety, and wildcard support",
+  "keywords": [
+    "typescript",
+    "event-emitter",
+    "events",
+    "eventemitter",
+    "typed-events",
+    "namespaced-events",
+    "wildcard-events"
+  ],
+  "author": {
+    "name": "Loik F.",
+    "url": "https://github.com/Lokicoule"
+  },
   "license": "MIT",
+  "homepage": "https://github.com/lokicoule-stack/emitter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lokicoule-stack/emitter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lokicoule-stack/emitter/issues"
+  },
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./types": {
-      "types": "./dist/types/main.d.ts",
-      "import": "./dist/types/main.js",
-      "default": "./dist/types/main.js"
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
     }
   },
   "files": [
