@@ -1,5 +1,12 @@
 # @lokiverse/emitter
 
+## 0.1.1
+
+### Patch Changes
+
+- d6861ba: - Update package.json to point to main.ts instead of index.ts for types
+  - Export additional type definitions from events.ts in main.ts
+
 ## 0.1.0
 
 ### Minor Changes
