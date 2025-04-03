@@ -34,8 +34,8 @@
       "default": "./dist/index.js"
     },
     "./types": {
-      "types": "./dist/types/index.d.ts",
-      "default": "./dist/types/index.js"
+      "types": "./dist/types/main.d.ts",
+      "default": "./dist/types/main.js"
     }
   },
   "files": [
