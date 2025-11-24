@@ -1,155 +1,85 @@
-<div align="center">
- <img src="https://github.com/lokicoule-stack/emitter/blob/main/media/repo-header.svg?raw=true" alt="Lokiverse Emitter" />
-</div>
+# @lokiverse/emitter
 
-<div align="center">
+Type-safe event emitter for TypeScript.
 
 [![npm version](https://img.shields.io/npm/v/@lokiverse/emitter.svg)](https://www.npmjs.com/package/@lokiverse/emitter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![codecov](https://codecov.io/gh/lokicoule-stack/emitter/branch/main/graph/badge.svg)](https://codecov.io/gh/lokicoule-stack/emitter)
 
-</div>
+## Install
 
-<div align="center">
-  <strong>
-    TypeScript-first event emitter that doesn't make me question my life choices.
-  </strong>
-</div>
+```bash
+npm install @lokiverse/emitter
+```
 
-<br />
-
-## The Good Parts
-
-### TypeScript
+## Usage
 
 ```typescript
 import { createEmitter } from '@lokiverse/emitter'
 
 type Events = {
-  'meeting:endless': { minutesWasted: number }
-  'meeting:scheduled': { conflictsWithLunch: boolean }
-  'meeting:cancelled': { excuseQuality: number }
+  'user:login': { id: string }
+  'user:logout': { id: string }
 }
 
 const emitter = createEmitter<Events>()
 
-// Your IDE actually knows what's going on
-emitter.meeting.$on('endless', ({ minutesWasted }) => {
-  if (minutesWasted < 60) {
-    console.log('That was just a warm-up')
-  }
-  if (minutesWasted > 120) {
-    console.log('Time to update the resume')
-  }
+emitter.user.$on('login', ({ id }) => {
+  console.log(`User ${id} logged in`)
 })
+
+emitter.user.$emit('login', { id: '123' })
 ```
 
 ## Features
 
-- 🎯 **Actually Type-Safe**: Because `any` is just admitting defeat
-- 🌳 **Proper Namespacing**: Not the "string prefix" kind of fake namespacing
-- 🃏 **Wildcard Listeners**: Like RegEx, but without the therapy sessions
-- 🚀 **Zero Dependencies**: No `node_modules` black hole
-- 🤏 **Tiny Bundle**: Smaller than your last code review comments
+- Full TypeScript support
+- Namespace-based event organization
+- Wildcard listeners
+- Zero dependencies
+- Small bundle size
 
-## Installation
+## API
 
-```bash
-pnpm add @lokiverse/emitter
-```
+### createEmitter<T>()
 
-## Usage
+Creates a new emitter instance.
 
-### Basic Usage (That Actually Works)
+### .$on(event, handler)
 
-```typescript
-// Define events (with real types, not "documentation")
-type GitEvents = {
-  'commit:push': { message: string; boringLevels: number }
-  'commit:revert': { excuse: string }
-}
+Subscribe to an event.
 
-const git = createEmitter<GitEvents>()
+### .$once(event, handler)
 
-// Your IDE is now your friend
-git.commit.$on('push', ({ message, boringLevels }) => {
-  if (message.includes('fix typo')) {
-    console.log('Sure it was "just" a typo')
-  }
-})
-```
+Subscribe to an event once.
 
-### One-Time Events
+### .$off(event, handler)
 
-```typescript
-// For those "it worked on my machine" moments
-git.commit.$once('revert', ({ excuse }) => {
-  console.log(`Saving ${excuse} for future use`)
-})
-```
+Unsubscribe from an event.
 
-### Wildcard Magic
+### .$emit(event, data)
+
+Emit an event.
+
+### .$ns(namespace)
+
+Get a namespace emitter.
+
+### Wildcards
 
 ```typescript
-// Catch all the things related to commits
-git.commit.$on('*', (event, data) => {
-  console.log(`Git did something: ${event}`, data)
-  // Perfect for those "what just happened?" moments
+// Listen to all events in a namespace
+emitter.user.$on('*', (event, data) => {
+  console.log(event, data)
 })
 
-// Use wildcards with namespaces as flat as earth
-git.$on('commit:*', (event, data) => {
-  console.log(`Revert or commit? That is the question: ${event}`, data)
+// Listen to all events matching a pattern
+emitter.$on('user:*', (event, data) => {
+  console.log(event, data)
 })
 ```
-
-### Namespace Like You Mean It
-
-```typescript
-// Split your concerns (unlike your PRs)
-const commitEvents = git.$ns('commit')
-commitEvents.$on('push', handlePush) // Clean and tidy
-```
-
-## Real World Examples (Because We All Copy-Paste)
-
-### Error Handling
-
-```typescript
-type ErrorEvents = {
-  'error:404': { url: string; lastSeenAlive: Date }
-  'error:500': { stack: string; blame: string }
-}
-
-const emitter = createEmitter<ErrorEvents>()
-
-emitter.error.$on('500', ({ stack, blame }) => {
-  console.log(`Time to blame ${blame || 'the intern'}`)
-})
-```
-
-### Feature Flags
-
-```typescript
-type FeatureEvents = {
-  'feature:enabled': { name: string; whoToBlame: string }
-  'feature:disabled': { name: string; excuses: string[] }
-}
-
-const emitter = createEmitter<FeatureEvents>()
-
-emitter.feature.$on('enabled', ({ name, whoToBlame }) => {
-  console.log(`${name} is now enabled. If it breaks, talk to ${whoToBlame}`)
-})
-```
-
-## Contributing
-
-Found a bug? Open an issue. Have a fix? PR welcome.
-
-> Just remember: With great type safety comes great responsibility.
 
 ## License
 
-MIT © [Lokiverse](./LICENSE)
+MIT
