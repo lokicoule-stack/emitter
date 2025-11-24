@@ -25,7 +25,7 @@ export const createCoreEmitter = (store: Store = createStore()): CoreEmitter => 
 
   const once = (event: EventType, handler: Function): void => {
     const wrappedHandler = (payload: unknown) => {
-      store.listeners.delete(event)
+      off(event, wrappedHandler)
       handler(payload)
     }
 
