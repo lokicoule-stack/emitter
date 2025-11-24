@@ -1,5 +1,11 @@
 # @lokiverse/emitter
 
+## 0.1.2
+
+### Patch Changes
+
+- 7cf4f30: Fix event handler removal in core emitter and update dependencies
+
 ## 0.1.1
 
 ### Patch Changes
