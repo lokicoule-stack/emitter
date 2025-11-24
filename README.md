@@ -46,35 +46,80 @@ emitter.user.$emit('login', { id: '123' })
 
 Creates a new emitter instance.
 
+```typescript
+const emitter = createEmitter<Events>()
+```
+
+### Namespaces
+
+Access namespaced events directly on the emitter:
+
+```typescript
+type Events = {
+  'user:login': { id: string }
+  'order:created': { orderId: string }
+}
+
+const emitter = createEmitter<Events>()
+
+// Access namespace directly
+emitter.user.$on('login', handler)
+emitter.order.$on('created', handler)
+
+// Or get a namespace reference
+const userEvents = emitter.$ns('user')
+userEvents.$on('login', handler)
+```
+
 ### .$on(event, handler)
 
 Subscribe to an event.
+
+```typescript
+emitter.user.$on('login', ({ id }) => {
+  console.log(id)
+})
+```
 
 ### .$once(event, handler)
 
 Subscribe to an event once.
 
+```typescript
+emitter.user.$once('login', ({ id }) => {
+  console.log('First login:', id)
+})
+```
+
 ### .$off(event, handler)
 
 Unsubscribe from an event.
+
+```typescript
+const handler = ({ id }) => console.log(id)
+emitter.user.$on('login', handler)
+emitter.user.$off('login', handler)
+```
 
 ### .$emit(event, data)
 
 Emit an event.
 
-### .$ns(namespace)
-
-Get a namespace emitter.
+```typescript
+emitter.user.$emit('login', { id: '123' })
+```
 
 ### Wildcards
 
+Listen to multiple events with wildcards:
+
 ```typescript
-// Listen to all events in a namespace
+// All events in a namespace
 emitter.user.$on('*', (event, data) => {
   console.log(event, data)
 })
 
-// Listen to all events matching a pattern
+// All events matching a pattern
 emitter.$on('user:*', (event, data) => {
   console.log(event, data)
 })
