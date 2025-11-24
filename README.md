@@ -1,6 +1,12 @@
-# @lokiverse/emitter
+<div align="center">
+ <img src="https://github.com/lokicoule-stack/emitter/blob/main/media/repo-header.svg?raw=true" alt="Lokiverse Emitter" />
+</div>
 
 Type-safe event emitter for TypeScript.
+
+----------------
+
+# @lokiverse/emitter
 
 [![npm version](https://img.shields.io/npm/v/@lokiverse/emitter.svg)](https://www.npmjs.com/package/@lokiverse/emitter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
